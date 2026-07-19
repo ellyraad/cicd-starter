@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -87,12 +89,18 @@ func main() {
 
 	v1Router.Get("/healthz", handlerReadiness)
 
-	router.Mount("/v1", v1Router)
-	srv := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
+	portNumber, err := strconv.Atoi(port)
+	if err != nil || portNumber < 1 || portNumber > 65535 {
+		log.Fatal("PORT must be a number between 1 and 65535")
 	}
 
-	log.Printf("Serving on port: %s\n", port)
+	router.Mount("/v1", v1Router)
+	srv := &http.Server{
+		Addr:              ":" + strconv.Itoa(portNumber),
+		Handler:           router,
+		ReadHeaderTimeout: 5 * time.Second,
+	}
+
+	log.Printf("Serving on port: %d", portNumber)
 	log.Fatal(srv.ListenAndServe())
 }
