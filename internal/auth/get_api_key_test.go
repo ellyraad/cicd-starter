@@ -16,7 +16,7 @@ func TestGetAPIKey(t *testing.T) {
 	}
 
 	tests := []test{
-		{ name: "valid API key", authorization: "ApiKey testing123", wantKey: "testing123" },
+		{ name: "valid API key", authorization: "ApiKey testing123", wantKey: "testing12" },
 		{ name: "missing auth header", wantErr: true, wantNoHeader: true },
 		{ name: "wrong auth key", authorization: "Bearer testing123", wantErr: true },
 		{ name: "missing API key", authorization: "ApiKey", wantErr: true },
