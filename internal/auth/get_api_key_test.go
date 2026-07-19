@@ -1,29 +1,29 @@
 package auth
 
 import (
-	"testing"
 	"errors"
 	"net/http"
+	"testing"
 )
 
 func TestGetAPIKey(t *testing.T) {
 	type test struct {
-		name string
+		name          string
 		authorization string
-		wantKey string
-		wantErr bool
-		wantNoHeader bool
+		wantKey       string
+		wantErr       bool
+		wantNoHeader  bool
 	}
 
 	tests := []test{
-		{ name: "valid API key", authorization: "ApiKey testing123", wantKey: "testing123" },
-		{ name: "missing auth header", wantErr: true, wantNoHeader: true },
-		{ name: "wrong auth key", authorization: "Bearer testing123", wantErr: true },
-		{ name: "missing API key", authorization: "ApiKey", wantErr: true },
+		{name: "valid API key", authorization: "ApiKey testing123", wantKey: "testing123"},
+		{name: "missing auth header", wantErr: true, wantNoHeader: true},
+		{name: "wrong auth key", authorization: "Bearer testing123", wantErr: true},
+		{name: "missing API key", authorization: "ApiKey", wantErr: true},
 	}
 
 	for _, tt := range tests {
-		t.Run(tt.name, func (t *testing.T) {
+		t.Run(tt.name, func(t *testing.T) {
 			headers := make(http.Header)
 			if tt.authorization != "" {
 				headers.Set("Authorization", tt.authorization)
